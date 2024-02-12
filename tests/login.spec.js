@@ -4,7 +4,6 @@ import { LoginPage } from '../pages/loginPage';
 import { loginData } from '../test-data/loginData';
 
 test.describe("Login tests", () => {
-    
     test.beforeEach( async ({ page }) => {
         await page.goto('/', { waitUntil: "load"} );
         await page.waitForLoadState('domcontentloaded');
