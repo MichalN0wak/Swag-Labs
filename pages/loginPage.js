@@ -1,5 +1,4 @@
 const { page } = require('@playwright/test');
-import { loginData } from '../test-data/loginData';
 
 exports.LoginPage = 
 class LoginPage {
