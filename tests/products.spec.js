@@ -33,7 +33,7 @@ test.describe("Products sorting tests", () => {
         //Arrange
         const inventoryPage = new InventoryPage(page);
         const productsNames = []
-        const sortingType = 'Name (A to Z)';
+        const expectedSortingType = 'Name (A to Z)';
         let isSortedAlphabeticallyAsc = false;
 
         //Act
@@ -42,7 +42,27 @@ test.describe("Products sorting tests", () => {
 
         //Assert
         await expect(productsNames).toHaveLength(6);
-        await expect(inventoryPage.sortingActiveOption).toHaveText(sortingType);
+        await expect(inventoryPage.sortingActiveOption).toHaveText(expectedSortingType);
         await expect(isSortedAlphabeticallyAsc).toBe(true);
+    });
+
+    test("when_changed_sorting_should_check_if_products_are_sorted_alphabetically_desc", async ({ page }) => {
+        //Arrange
+        const inventoryPage = new InventoryPage(page);
+        const productsNames = []
+        const expectedSortingType = 'Name (Z to A)';
+        let isSortedAlphabeticallyDesc = false;
+        
+        //Act
+        await inventoryPage.sortingTypesList.click( {timeout: 5000} );
+        await inventoryPage.sortingTypesList.selectOption("za", {timeout: 5000} );
+        await inventoryPage.defineArrayOfProductsNames(productsNames);
+        isSortedAlphabeticallyDesc = await inventoryPage.checkSortingByNameDesc(productsNames);
+        console.log(await Promise.all(productsNames));
+
+        //Assert
+        await expect(productsNames).toHaveLength(6);
+        await expect(inventoryPage.sortingActiveOption).toHaveText(expectedSortingType);
+        await expect(isSortedAlphabeticallyDesc).toBe(true);
     });
 });
