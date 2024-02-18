@@ -54,15 +54,35 @@ test.describe("Products sorting tests", () => {
         let isSortedAlphabeticallyDesc = false;
         
         //Act
-        await inventoryPage.sortingTypesList.click( {timeout: 5000} );
-        await inventoryPage.sortingTypesList.selectOption("za", {timeout: 5000} );
+        await inventoryPage.sortingTypesList.click();
+        await inventoryPage.sortingTypesList.selectOption("za");
         await inventoryPage.defineArrayOfProductsNames(productsNames);
         isSortedAlphabeticallyDesc = await inventoryPage.checkSortingByNameDesc(productsNames);
-        console.log(await Promise.all(productsNames));
-
+        
         //Assert
         await expect(productsNames).toHaveLength(6);
         await expect(inventoryPage.sortingActiveOption).toHaveText(expectedSortingType);
         await expect(isSortedAlphabeticallyDesc).toBe(true);
+    });
+    
+    test("when_changed_sorting_should_check_if_products_are_sorted_by_price_asc", async ({ page }) => {
+        //Arrange
+        const inventoryPage = new InventoryPage(page);
+        const productsPrices = []
+        const expectedSortingType = 'Price (low to high)';
+        let isSortedAlByPriceAsc = false;
+        
+        
+        //Act
+        await inventoryPage.sortingTypesList.click( {timeout: 5000} );
+        await inventoryPage.sortingTypesList.selectOption("lohi", {timeout: 5000} );
+        await inventoryPage.definaArrayOfProductsPrices(productsPrices);
+        isSortedAlByPriceAsc = await inventoryPage.checkSortingByPriceAsc(productsPrices, {timeout: 5000});
+        
+        //Assert
+        await expect(productsPrices).toHaveLength(6);
+        await expect(inventoryPage.sortingActiveOption).toHaveText(expectedSortingType);
+        await expect(isSortedAlByPriceAsc).toBe(true);
+
     });
 });
