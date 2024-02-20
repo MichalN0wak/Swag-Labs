@@ -55,4 +55,18 @@ class InventoryPage {
         }
         return true;
     }
+
+    async checkSortingByPriceDesc(arrayOfPrices) {
+        for (let i = 1; i < arrayOfPrices.length; i++) {
+            const price1 = parseFloat(arrayOfPrices[i].replace('$', ''));
+            const price2 = parseFloat(arrayOfPrices[i - 1].replace('$', ''));
+            if (price1 === price2) {
+                continue;
+            }
+            if (price1 > price2) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

@@ -72,7 +72,6 @@ test.describe("Products sorting tests", () => {
         const expectedSortingType = 'Price (low to high)';
         let isSortedAlByPriceAsc = false;
         
-        
         //Act
         await inventoryPage.sortingTypesList.click( {timeout: 5000} );
         await inventoryPage.sortingTypesList.selectOption("lohi", {timeout: 5000} );
@@ -83,6 +82,24 @@ test.describe("Products sorting tests", () => {
         await expect(productsPrices).toHaveLength(6);
         await expect(inventoryPage.sortingActiveOption).toHaveText(expectedSortingType);
         await expect(isSortedAlByPriceAsc).toBe(true);
+    });
 
+    test("when_changed_sorting_should_check_if_products_are_sorted_by_price_desc", async ({ page }) => {
+        //Arrange
+        const inventoryPage = new InventoryPage(page);
+        const productsPrices = []
+        const expectedSortingType = 'Price (high to low)';
+        let isSortedAlByPriceDesc = false;
+        
+        //Act
+        await inventoryPage.sortingTypesList.click( {timeout: 5000} );
+        await inventoryPage.sortingTypesList.selectOption("hilo", {timeout: 5000} );
+        await inventoryPage.definaArrayOfProductsPrices(productsPrices);
+        isSortedAlByPriceDesc = await inventoryPage.checkSortingByPriceDesc(productsPrices, {timeout: 5000});
+        
+        //Assert
+        await expect(productsPrices).toHaveLength(6);
+        await expect(inventoryPage.sortingActiveOption).toHaveText(expectedSortingType);
+        await expect(isSortedAlByPriceDesc).toBe(true);
     });
 });
